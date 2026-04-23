@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ES2022",
+    "moduleResolution": "node",
+    "outDir": "./build",
+    "rootDir": "./src",
+    "strict": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "declaration": true
+  },
+  "include": ["src/index.ts", "src/cli.ts"],
+  "exclude": [
+    "node_modules",
+    "src/**/index copy.ts",
+    "src/**/index copy 2.ts",
+    "src/**/*copy*.ts"
+  ]
+}

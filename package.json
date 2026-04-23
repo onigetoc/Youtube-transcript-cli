@@ -1,0 +1,32 @@
+{
+  "name": "youtube-transcript-cli",
+  "version": "0.1.0",
+  "author": "Onigetoc",
+  "private": false,
+  "type": "module",
+  "license": "MIT",
+  "files": [
+    "build",
+    "README.md"
+  ],
+  "bin": {
+    "yt-transcript": "build/cli.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build",
+    "start": "node build/index.js",
+    "dev": "bunx tsx src/index.ts"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.7.0",
+    "youtube-transcript-plus": "^1.1.2",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/glob": "^8.1.0",
+    "@types/node": "^20.0.0",
+    "@types/tar": "^6.1.13",
+    "typescript": "^5.0.0"
+  }
+}
