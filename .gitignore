@@ -23,3 +23,9 @@ imgs/
 *.log
 bun.lockb
 package-lock.json
+.gemini
+
+# Ignore all dot-prefixed directories anywhere in the repo
+.*/
+**/.*/
+

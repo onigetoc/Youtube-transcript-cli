@@ -175,9 +175,9 @@ The communication between the SQLite MCP server and your local SQLite database h
 using tools:
 
 ```javascript
-// Remarque de compatibilité:
-// - Si votre SDK expose `server/mcp.js`, l'exemple original fonctionne.
-// - Sinon, utilisez les exemples plus bas basés sur `@modelcontextprotocol/sdk/server/index.js`.
+// Compatibility note:
+// - If your SDK exposes `server/mcp.js`, the original example works.
+// - Otherwise, use the examples below based on `@modelcontextprotocol/sdk/server/index.js`.
 import { McpServer, ResourceTemplate } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
@@ -700,29 +700,29 @@ runServer().catch((error) => {
 });
 ```
 
-### Troubleshooting (Windows/PowerShell) – ERR_MODULE_NOT_FOUND sur `@modelcontextprotocol/sdk/server/mcp.js`
+### Troubleshooting (Windows/PowerShell) – ERR_MODULE_NOT_FOUND on `@modelcontextprotocol/sdk/server/mcp.js`
 
-Si vous voyez une erreur du type:
+If you see an error like this:
 ```
 Error [ERR_MODULE_NOT_FOUND]: Cannot find module '...@modelcontextprotocol/sdk/dist/server/mcp.js'
 ```
-alors votre version locale du SDK ne fournit pas `server/mcp.js`. Corriger de l'une des façons suivantes:
+then your local SDK version does not provide `server/mcp.js`. Fix it in one of the following ways:
 
-- Option A (recommandée rapidement): mettre à niveau le SDK.
+- Option A (quick recommendation): upgrade the SDK.
   PowerShell:
   ```
   bun add @modelcontextprotocol/sdk@latest; bun run build
   ```
 
-- Option B (alternative stable): changer l'import de votre serveur MCP pour utiliser l'API stable:
+- Option B (stable alternative): change your MCP server import to use the stable API:
   ```
   import { Server } from "@modelcontextprotocol/sdk/server/index.js";
   ```
-  et adapter le code pour utiliser `Server` (voir les exemples "Example simple 2/3/4" ci‑dessous qui utilisent `server/index.js`). Éviter l'import `server/mcp.js` si votre SDK ne l'expose pas.
+  and adapt your code to use `Server` (see "Example simple 2/3/4" below that use `server/index.js`). Avoid importing `server/mcp.js` if your SDK does not expose it.
 
-Ensuite, évitez `npx` sous Windows pour lancer votre serveur via les hôtes MCP (Cline, Roo Code, Claude Desktop). Préférez `node` + le fichier compilé:
+Then, avoid using `npx` on Windows to launch your server via MCP hosts (Cline, Roo Code, Claude Desktop). Prefer `node` + the compiled file:
 
-### Exemple de config Cline/Roo/Claude Desktop (Windows)
+### Example Cline/Roo/Claude Desktop config (Windows)
 ```json
 {
   "mcpServers": {
@@ -737,18 +737,18 @@ Ensuite, évitez `npx` sous Windows pour lancer votre serveur via les hôtes MCP
 }
 ```
 
-Vérifications rapides:
-- `bun -v` doit répondre. Sinon, installez Bun (https://bun.sh) puis `bun install`.
+Quick checks:
+- `bun -v` should return a version. Otherwise, install Bun (https://bun.sh) and then run `bun install`.
 - `bun add @modelcontextprotocol/sdk@latest; bun run build`
-- Relancez l'hôte MCP et testez.
+- Restart the MCP host and test again.
 
 ## Demo example with multiple tools call for a mcp filesystem-server
 using tools:
 
 ```javascript
-// Remarque de compatibilité:
-// - Si votre SDK expose `server/mcp.js`, l'exemple original fonctionne.
-// - Sinon, utilisez les exemples plus bas basés sur `@modelcontextprotocol/sdk/server/index.js`.
+// Compatibility note:
+// - If your SDK exposes `server/mcp.js`, the original example works.
+// - Otherwise, use the examples below based on `@modelcontextprotocol/sdk/server/index.js`.
 import { McpServer, ResourceTemplate } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";

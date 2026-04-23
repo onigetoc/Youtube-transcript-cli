@@ -1,10 +1,10 @@
 #!/usr/bin/env node
-// CLI rapide pour récupérer un transcript sans passer par le protocole MCP.
-// Usage: node build/cli.js [<url|videoId>] [--lang fr,en] [--timestamps] [--max 8000]
-// Si aucun premier argument (ou que le premier commence par --), on utilise la vidéo par défaut.
-// Vidéo par défaut choisie pour test: https://www.youtube.com/watch?v=4q2fTmGWTpc
+// Quick CLI to fetch a transcript without going through MCP.
+// Usage: node build/cli.js [<url|videoId>] [--lang en,fr] [--timestamps] [--max 8000]
+// If no first argument is provided (or it starts with --), use the default video.
+// Default test video: https://www.youtube.com/watch?v=dQw4w9WgXcQ
 
-const DEFAULT_VIDEO = 'https://www.youtube.com/watch?v=4q2fTmGWTpc';
+const DEFAULT_VIDEO = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
 
 import { YoutubeTranscript } from 'youtube-transcript-plus';
 
@@ -134,7 +134,7 @@ function chunkLinesByChars(lines: string[], maxCharsPerChunk: number): string[][
   return chunks;
 }
 
-// Petit parseur de flags CLI: --timestamps, --max, --lang
+// Small CLI flags parser: --timestamps, --max, --lang
 function parseFlags(argv: string[]) {
 	const out: { help?: boolean; timestamps: boolean; max?: number; lang?: string[]; urlOrId?: string } = {
     timestamps: false,
@@ -165,29 +165,29 @@ function parseFlags(argv: string[]) {
 async function main(){
 	const flags = parseFlags(process.argv.slice(2));
 	if (flags.help){
-		console.log('Usage: yt-transcript [<url|videoId>] [--lang fr,en] [--timestamps] [--max 8000]');
+		console.log('Usage: yt-transcript [<url|videoId>] [--lang en,fr] [--timestamps] [--max 8000]');
 		console.log('Without URL/ID, the default demo video is used: ' + DEFAULT_VIDEO);
 		process.exit(0);
 	}
-	// Déterminer si le premier argument est une URL/ID ou une option
+	// Determine whether the first argument is a URL/ID or an option
 	let target: string | undefined = flags.urlOrId;
 	if (!target) {
 		target = DEFAULT_VIDEO;
-		console.error('(i) Aucune vidéo fournie, utilisation de la vidéo par défaut.');
+		console.error('(i) No video provided, using default video.');
 	}
 	const langs = flags.lang;
 	const includeTimestamps = flags.timestamps;
-	const maxCharsPerChunk = typeof flags.max === 'number' ? flags.max : 0; // pas de découpe par défaut
+	const maxCharsPerChunk = typeof flags.max === 'number' ? flags.max : 0; // no chunking by default
 
 	const vid = extractVideoId(target);
 	if (!vid){
-		console.error('ID vidéo invalide.');
+		console.error('Invalid video ID.');
 		process.exit(1);
 	}
 	try {
 		const transcript = await fetchTranscript(vid, langs);
 		if(!transcript?.length){
-			console.error('Transcript vide.');
+			console.error('Empty transcript.');
 			process.exit(2);
 		}
 		const lines = buildLinesFromSegments(transcript as any, includeTimestamps, decodeHtmlEntities);
@@ -202,7 +202,7 @@ async function main(){
 		  console.log(chunks[i].join('\n'));
 		}
 	} catch(e){
-		console.error('Erreur:', (e instanceof Error)? e.message: String(e));
+		console.error('Error:', (e instanceof Error)? e.message: String(e));
 		process.exit(3);
 	}
 }

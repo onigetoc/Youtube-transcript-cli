@@ -1,12 +1,12 @@
-// Test client MCP minimal pour le serveur YouTube Transcript
-// Usage: node test-client.cjs <url_ou_id_video> [--lang fr,en] [--timestamps]
-// Le but est d'éviter d'installer dans un client MCP complet.
+// Minimal MCP test client for the YouTube Transcript server
+// Usage: node test-client.cjs <url_or_video_id> [--lang en,fr] [--timestamps]
+// The goal is to avoid installing into a full MCP client.
 
 const { spawn } = require('child_process');
 
 const args = process.argv.slice(2);
 if (args.length === 0) {
-  console.log('Usage: node test-client.cjs <url|videoId> [--lang fr,en] [--timestamps]');
+  console.log('Usage: node test-client.cjs <url|videoId> [--lang en,fr] [--timestamps]');
   process.exit(1);
 }
 
@@ -20,7 +20,7 @@ let initialized = false;
 let listed = false;
 let runSent = false;
 
-console.log('🚀 Lancement serveur (build requis au préalable: npm run build)');
+console.log('🚀 Starting server (build required first: npm run build)');
 const serverProcess = spawn('node', ['build/index.js'], { stdio: ['pipe', 'pipe', 'pipe'] });
 
 function send(obj){
@@ -45,7 +45,7 @@ function listTools(){
 }
 
 function runTranscript(){
-  const argumentsObj = {}; // le tool accepte url OU video_id
+  const argumentsObj = {}; // tool accepts url OR video_id
   if (/^https?:\/\//i.test(target)) argumentsObj.url = target; else argumentsObj.video_id = target;
   if (languages) argumentsObj.languages = languages;
   if (timestamps) argumentsObj.include_timestamps = true;
@@ -69,13 +69,13 @@ serverProcess.stdout.on('data', data => {
     if(!line.trim()) continue;
     let msg;
     try { msg = JSON.parse(line); } catch { 
-      console.log('📄 (stdout non JSON)', line);
+      console.log('📄 (non-JSON stdout)', line);
       continue;
     }
-    // Affichage condensé
+    // Compact display
     if (msg.method === 'notifications/...' ) return; // placeholder
     if (msg.id !== undefined) {
-      console.log(`\n🔄 Réponse id=${msg.id}`);
+      console.log(`\n🔄 Response id=${msg.id}`);
     }
     console.dir(msg, { depth: 6, colors: true });
     if (msg.id === 1 && !msg.error){
@@ -85,13 +85,13 @@ serverProcess.stdout.on('data', data => {
       listed = true;
       const names = (msg.result?.tools || []).map(t=>t.name);
       if (!names.includes('youtube_transcript')){
-        console.error('❌ Tool youtube_transcript non trouvé. Tools dispo:', names);
+        console.error('❌ Tool youtube_transcript not found. Available tools:', names);
         serverProcess.kill();
         return;
       }
       runTranscript();
     } else if (msg.id === 3){
-      console.log('\n✅ Exécution terminée. Fermeture serveur.');
+      console.log('\n✅ Execution finished. Closing server.');
       serverProcess.kill();
     }
   }
@@ -102,16 +102,16 @@ serverProcess.stderr.on('data', d => {
 });
 
 serverProcess.on('close', code => {
-  console.log(`\n👋 Serveur stoppé (code ${code}).`);
+  console.log(`\n👋 Server stopped (code ${code}).`);
 });
 
 setTimeout(() => {
   if(!initialized){
-    console.error('⏱️ Timeout: initialize pas reçu');
+    console.error('⏱️ Timeout: initialize not received');
     serverProcess.kill();
   }
   if(initialized && !runSent){
-    console.error('⏱️ Timeout: tools/run pas exécuté');
+    console.error('⏱️ Timeout: tools/run not executed');
     serverProcess.kill();
   }
 }, 20000);

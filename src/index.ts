@@ -17,11 +17,11 @@ function decodeHtmlEntities(raw: string): string {
     .replace(/&quot;/g, '"')
     .replace(/&#39;/g, "'")
     .replace(/&nbsp;/g, ' ')
-    // entités numériques décimales
+    // decimal numeric entities
     .replace(/&#(\d+);/g, (_, d) => {
       try { return String.fromCodePoint(parseInt(d, 10)); } catch { return _; }
     })
-    // entités numériques hexadécimales
+    // hexadecimal numeric entities
     .replace(/&#x([0-9a-fA-F]+);/g, (_, h) => {
       try { return String.fromCodePoint(parseInt(h, 16)); } catch { return _; }
     });
@@ -30,26 +30,26 @@ function decodeHtmlEntities(raw: string): string {
 // Clean certain encoding artifacts (e.g., corrupted sequences like ÔÖ¬) when they repeat
 // Common glitch sequences from poorly decoded subtitles (UTF-8 interpreted as Latin1)
 function normalizeGlitches(text: string): string {
-  // Séquences glitched communes provenant de sous-titres mal décodés (UTF-8 interprété en Latin1)
+  // Common glitched sequences from badly decoded subtitles (UTF-8 interpreted as Latin1)
   const replacements: { pattern: RegExp; sub: string }[] = [
-    /ÔÖ¬+/g,        // Observé dans ton exemple
-    /â™ª+/g,        // Variante courante du symbole ♪ mal décodé
-    /â™«+/g,        // Variante du symbole ♫ (double note)
+    /ÔÖ¬+/g,        // Observed in sample output
+    /â™ª+/g,        // Common variant of badly decoded ♪ symbol
+    /â™«+/g,        // Variant of ♫ symbol (double note)
     /Ã©/g,          // é
     /Ã¨/g,          // è
     /Ãª/g,          // ê
     /Ã«/g,          // ë
-    /Ã /g,          // à (note l'espace)
+    /Ã /g,          // à (note the space)
     /Ã¹/g,          // ù
     /Ã´/g,          // ô
     /Ã®/g,          // î
     /Ã¯/g,          // ï
     /Ã«/g,          // ë
-    /Â·/g,          // · (point milieu)
+    /Â·/g,          // · (middle dot)
   ].map(p => ({ pattern: p, sub: '♪' }));
   let out = text;
   for (const { pattern, sub } of replacements) out = out.replace(pattern, sub);
-  // Nettoie multiples ♪ contigus
+  // Collapse contiguous ♪ symbols
   out = out.replace(/♪{2,}/g, '♪');
   return out.trim();
 }
@@ -57,7 +57,7 @@ function normalizeGlitches(text: string): string {
 /** Robust extraction of video ID from various URL formats or direct ID */
 function extractVideoId(input: string): string | null {
   if (!input) return null;
-  // Déjà un ID probable (11 chars alphanum + _ -)
+  // Already a likely ID (11 alnum chars + _ -)
   if (/^[\w-]{11}$/.test(input)) return input;
 
   try {
@@ -68,11 +68,11 @@ function extractVideoId(input: string): string | null {
     if (url.searchParams.get("v")) {
       return url.searchParams.get("v");
     }
-    // Formats /embed/VIDEOID ou /v/VIDEOID
+    // /embed/VIDEOID or /v/VIDEOID formats
     const m = url.pathname.match(/\/(embed|v)\/([\w-]{11})/);
     if (m) return m[2];
   } catch {
-    // Pas une URL valide, on retente avec pattern global
+    // Not a valid URL, retry with global pattern
     const m = input.match(/([\w-]{11})/);
     if (m) return m[1];
   }
@@ -86,7 +86,7 @@ async function fetchTranscript(
 ) {
   try {
     if (languages && languages.length > 0) {
-      // Essaye dans l'ordre donné
+      // Try in the provided order
       for (const lang of languages) {
         try {
           const t = await YoutubeTranscript.fetchTranscript(videoId, { lang });
@@ -184,7 +184,7 @@ function chunkText(text: string, max: number): string[] {
   return chunks;
 }
 
-// Création du serveur avec la nouvelle API
+// Create server with the new API
 const server = new Server(
   {
     name: "gc-youtube-transcript",
@@ -197,7 +197,7 @@ const server = new Server(
   }
 );
 
-// Handler pour lister les outils disponibles
+// Handler to list available tools
 server.setRequestHandler(ListToolsRequestSchema, async () => {
   return {
     tools: [
@@ -256,13 +256,13 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
   };
 });
 
-// Handler pour exécuter les outils
+// Handler to execute tools
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
   try {
     const { name, arguments: args } = request.params;
 
     if (name === "youtube_transcript") {
-      // Gestion robuste des paramètres avec valeurs par défaut
+      // Robust parameter handling with defaults
       const {
         url,
         video_id,
@@ -271,7 +271,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         max_chars_per_chunk,
       } = args as any;
 
-      // Paramètres par défaut obligatoires
+      // Required default parameters
       const includeTimestamps = include_timestamps === true ? true : false; // Default: false
       const maxCharsPerChunk = typeof max_chars_per_chunk === 'number' && max_chars_per_chunk >= 0
         ? Math.min(20000, Math.max(max_chars_per_chunk === 0 ? 0 : Math.max(500, max_chars_per_chunk)))
@@ -326,7 +326,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
         const errorMessage = transcriptError instanceof Error ? transcriptError.message : String(transcriptError);
         let detailedError = `Error fetching transcript for video ${vid}: ${errorMessage}`;
 
-        // Erreurs spécifiques communes
+        // Common specific errors
         if (errorMessage.includes('Video unavailable')) {
           detailedError += '\n- The video may be private, unlisted, or removed';
         } else if (errorMessage.includes('Transcript disabled')) {
@@ -444,11 +444,11 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 async function main() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  // Supprimé le console.error qui peut interférer avec Dive
+  // Removed console.error which can interfere with Dive
   // console.error("YouTube Transcript MCP Server is running (stdio)");
 }
 
 main().catch((err) => {
-  // Log l'erreur quelque part mais pas sur stderr pour éviter de casser MCP
-  // Le serveur doit rester en vie même si l'initialisation échoue
+  // Log error elsewhere, not on stderr, to avoid breaking MCP
+  // Server should remain alive even if initialization fails
 });
