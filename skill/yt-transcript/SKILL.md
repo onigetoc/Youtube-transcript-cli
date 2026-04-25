@@ -70,9 +70,6 @@ yt-transcript dQw4w9WgXcQ --lang=en
 
 # Run without global install (optional)
 npx yt-transcript https://www.youtube.com/watch?v=dQw4w9WgXcQ --lang=en,fr --timestamps --max=6000
-
-# Run without global install (optional)
-bunx yt-transcript https://www.youtube.com/watch?v=dQw4w9WgXcQ --lang=en,fr --timestamps --max=6000
 ```
 
 ## Output Behavior
@@ -85,7 +82,7 @@ bunx yt-transcript https://www.youtube.com/watch?v=dQw4w9WgXcQ --lang=en,fr --ti
 
 - Keep this skill focused on transcript extraction usage.
 - Do not include repository development workflows here (`build`, `link`, `publish`).
-- Use direct `yt-transcript` after global install, or `npx`/`bunx` for one-shot execution.
+- Use direct `yt-transcript` after global install, or `npx` for one-shot execution.
 
 ## Skill Prompt Examples
 

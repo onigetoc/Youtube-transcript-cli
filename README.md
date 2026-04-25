@@ -50,8 +50,6 @@ Run with `npx`:
 
 ```sh
 npx yt-transcript https://www.youtube.com/watch?v=dQw4w9WgXcQ --lang=en,fr --timestamps --max=6000
-# or with bunx
-bunx yt-transcript https://www.youtube.com/watch?v=dQw4w9WgXcQ --lang=en,fr --timestamps --max=6000
 ```
 
 ## Local Development Test (before publishing)
@@ -87,6 +85,17 @@ yt-transcript [<url|videoId>] [--lang en,fr] [--timestamps] [--max 12000]
 ```
 
 If no URL/ID is provided, a default demo video is used.
+
+## Version
+
+Check the installed CLI version:
+
+```sh
+yt-transcript -v
+yt-transcript --version
+# when running without global install via npx:
+npx youtube-transcript-cli -v
+```
 
 ## Options
 
