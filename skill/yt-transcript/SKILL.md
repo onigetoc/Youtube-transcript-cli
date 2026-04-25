@@ -9,6 +9,24 @@ description: Fetch and display YouTube video transcripts/subtitles as plain text
 
 `yt-transcript` is a CLI that fetches YouTube transcripts from a URL or raw video ID.
 
+The skill should work after install with no build step and no link step.
+
+## Pre-install check
+
+Before installing, you can check whether the CLI is already available to avoid re-installing:
+
+```sh
+# check installed yt-transcript (global)
+yt-transcript -v
+
+# check npx is available (for running via npx)
+npx -v
+
+# (optional) check binary path on POSIX/Windows
+which yt-transcript   # POSIX
+where yt-transcript   # Windows
+```
+
 ## Installation
 
 ```sh
@@ -17,8 +35,6 @@ npm install -g youtube-transcript-cli
 # or
 bun add -g youtube-transcript-cli
 ```
-
-The skill should work after install with no build step and no link step.
 
 ## CLI Usage
 

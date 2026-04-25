@@ -1,10 +1,29 @@
 {
   "name": "youtube-transcript-cli",
-  "version": "0.1.0",
+  "version": "0.1.2",
+  "description": "A Node.js CLI that fetches YouTube transcripts from a video URL or video ID.",
   "author": "Onigetoc",
   "private": false,
   "type": "module",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/onigetoc/Youtube-transcript-cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/onigetoc/Youtube-transcript-cli/issues"
+  },
+  "homepage": "https://github.com/onigetoc/Youtube-transcript-cli#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "youtube",
+    "transcript",
+    "cli",
+    "captions",
+    "subtitles"
+  ],
   "files": [
     "build",
     "README.md"

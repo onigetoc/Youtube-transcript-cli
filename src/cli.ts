@@ -7,6 +7,9 @@
 const DEFAULT_VIDEO = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
 
 import { YoutubeTranscript } from 'youtube-transcript-plus';
+import * as fs from 'fs';
+import * as path from 'path';
+import { fileURLToPath } from 'url';
 
 function decodeHtmlEntities(raw: string): string {
 	if (!raw || !raw.includes('&')) return raw;
@@ -136,7 +139,7 @@ function chunkLinesByChars(lines: string[], maxCharsPerChunk: number): string[][
 
 // Small CLI flags parser: --timestamps, --max, --lang
 function parseFlags(argv: string[]) {
-	const out: { help?: boolean; timestamps: boolean; max?: number; lang?: string[]; urlOrId?: string } = {
+	const out: { help?: boolean; timestamps: boolean; max?: number; lang?: string[]; urlOrId?: string; version?: boolean } = {
     timestamps: false,
   };
   for (let i = 0; i < argv.length; i++) {
@@ -145,6 +148,8 @@ function parseFlags(argv: string[]) {
 			out.help = true;
 		} else if (a === '--timestamps') {
       out.timestamps = true;
+		} else if (a === '--version' || a === '-v') {
+			out.version = true;
     } else if (a === '--max') {
       const v = argv[i + 1];
       if (v && !v.startsWith('--')) { out.max = Number(v); i++; }
@@ -162,11 +167,27 @@ function parseFlags(argv: string[]) {
   return out;
 }
 
+function getPackageVersion(): string {
+	try {
+		const baseDir = (typeof __dirname !== 'undefined') ? __dirname : path.dirname(fileURLToPath(import.meta.url));
+		const p = path.resolve(baseDir, '..', 'package.json');
+		const raw = fs.readFileSync(p, 'utf8');
+		const j = JSON.parse(raw);
+		return String(j.version || '0.0.0');
+	} catch {
+		return '0.0.0';
+	}
+}
+
 async function main(){
 	const flags = parseFlags(process.argv.slice(2));
 	if (flags.help){
 		console.log('Usage: yt-transcript [<url|videoId>] [--lang en,fr] [--timestamps] [--max 8000]');
 		console.log('Without URL/ID, the default demo video is used: ' + DEFAULT_VIDEO);
+		process.exit(0);
+	}
+	if (flags.version){
+		console.log(getPackageVersion());
 		process.exit(0);
 	}
 	// Determine whether the first argument is a URL/ID or an option

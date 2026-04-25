@@ -4,7 +4,7 @@
     "module": "ES2022",
     "moduleResolution": "node",
     "types": ["node"],
-    "ignoreDeprecations": "6.0",
+    "ignoreDeprecations": "5.0",
     "outDir": "./build",
     "rootDir": "./src",
     "strict": true,
