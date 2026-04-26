@@ -116,7 +116,34 @@ When integrated as a skill in an AI assistant, users can ask:
 
 - `Give me the transcript and timestamps on this video https://www.youtube.com/watch?v=dQw4w9WgXcQ`
 - `Give me the french transcript of this Youtube video dQw4w9WgXcQ`
-- `Extract transcript in English and French with timestamps for https://youtu.be/dQw4w9WgXcQ`
+- `Extract transcript in English and French with timestamps for https://youtu.be/dQw4w9WgXcQ and save it as a .txt/.md/text/markdown file` 
+
+## Use as a Skill (Integration instructions)
+
+To integrate this CLI as a reusable skill, place a folder containing a `SKILL.md` file inside one of the assistant-supported `skills` directories. Common locations:
+
+- `<your-project>/.claude/skills/yt-transcript/`
+- `<your-project>/.github/skills/yt-transcript/`
+- `<your-project>/.opencode/skills/yt-transcript/`
+
+In that folder create a `SKILL.md` describing usage and parameters. Minimal example:
+
+```
+# yt-transcript
+
+Short description: Uses the `yt-transcript` CLI to fetch a YouTube video's transcript.
+
+Usage examples:
+- `yt-transcript https://www.youtube.com/watch?v=<id> --lang en,fr --timestamps`
+
+Notes:
+- Ensure `youtube-transcript-cli` is available in the runtime environment (installed as a project dependency or available in `PATH`).
+- Adapt the invocation to your assistant runtime (Node, container, cloud function, etc.).
+```
+
+After adding the folder, register or load the `skills` directory according to your assistant's mechanism so the skill becomes discoverable.
+
+If you want, I can create an example `SKILL.md` in one of these locations in the repository — which one do you prefer?
 
 ## Publish to npm
 

@@ -30,204 +30,41 @@ Define explicit rules for maximum file length and the required modularization st
 
 ### Output Format Rules
 - Output only the code (unless explicitly told to include explanations).
-- Do not generate placeholder text like "TODO" unless specifically requested.
-- If any file would exceed 500 lines, split it into smaller files and use imports/exports accordingly.
 
----
+## Project Overview (updated)
 
-**Example Request**:  
-_"Build a REST API with Node.js and Express that handles CRUD operations for a 'tasks' resource."_  
-**Expected Behavior**:  
-- Output multiple smaller files if needed, each **under 500 lines**.
-- Use modular structure (`routes/`, `controllers/`, `models/`).
+This repository is a TypeScript CLI tool for fetching and processing YouTube transcripts. It is not a Remotion video project. The instructions below have been adapted to reflect a CLI-focused TypeScript project structure and Windows development environment.
 
-## Project Overview
+## Technology & Runtime
 
-This is a Remotion video project for creating programmatic videos using React components. Remotion allows you to create videos declaratively using familiar React patterns with animations powered by Remotion's APIs.
+- TypeScript (compiled to Node.js)
+- Node.js runtime (Windows PowerShell recommended)
+- Build output located in `build/`
+- Primary package scripts configured in `package.json`
 
-## Technology Stack
+## Development Commands (Windows / PowerShell)
 
-- **Remotion 4.0.331** - Core video creation framework
-- **React 19** with TypeScript - Component-based video development
-- **Tailwind CSS 4.0** - Styling system integrated with Remotion
-- **Zod** - Schema validation for component props
-- **ESLint** - Code linting with Remotion's flat config
+Use the package manager and scripts defined in `package.json`. Typical commands:
 
-## Development Commands for nodejs project
-
-### System Specifications
-- **Operating System**: Windows 10/11
-- **Package Manager**: Bun (always use `bun` commands, never `npm`)
-- **No Linux/macOS commands**: Only use Windows-compatible commands and paths
-- **Check if bun is installed** bun -v 
-  - instruct the user how to install bun if he want to use it. If not, remove all the ## Development Commands for nodejs project RULES from this file
-
-### Package Management Rules
-- **ALWAYS use `bun` instead of `npm`**:
-  - `bun install` instead of `npm install`
-  - `bun add` instead of `npm install package`
-  - `bun remove` instead of `npm uninstall`
-  - `bun run` instead of `npm run`
-  - `bun dev` instead of `npm run dev`
-  - `bun build` instead of `npm run build`
-
-```bash
-bun run dev          # Start Remotion Studio (preview environment)
-bun run build        # Bundle the project for rendering
-bun run render       # Render all compositions
-bun run renderHello  # Render specifically the HelloWorld composition
-bun run renderOut    # Render HelloWorld to out/hello-world.mp4 with H264 codec
-bun run upgrade      # Upgrade Remotion to latest version
-bun run lint         # Run ESLint and TypeScript checks
+```powershell
+npm install
+npm run build
+node build/index.js <url> [options]
+npm run test
 ```
 
-## Windows Path Conventions
-- Use Windows path separators (`\` or `/`)
-- Use Windows environment variables when needed
-- Avoid Unix-style commands and paths
-- Use `cmd.exe` or PowerShell compatible commands
+If you prefer `bun` and it is installed, you can substitute `bun` equivalents, but verify compatibility before switching.
 
-## Project Architecture
+## Project Structure (important files)
 
-### Core Structure
-- `src/Root.tsx` - Remotion root component defining all compositions
-- `src/Studio.tsx` - Main video composition with animation logic
-- `src/HelloWorld/` - Component library for the video
-  - Individual components: `Logo.tsx`, `Title.tsx`, `Subtitle.tsx`, `Arc.tsx`, `Atom.tsx`
-  - `constants.ts` - Shared styling constants
+- `src/cli.ts` - CLI entry point
+- `src/index.ts` - Library entry point
+- `build/` - Compiled output (JavaScript + type definitions)
+- `docs/` - Documentation and guides
 
-### Video Compositions
-Each `<Composition>` in `Root.tsx` represents a renderable video with:
-- Unique ID for CLI rendering
-- Duration in frames and FPS
-- Video dimensions (1920x1080)
-- Zod schema for prop validation
-- Default props for parametrized rendering
+## Adaptation note
 
-### Animation Patterns
-- Uses `spring()` for smooth physics-based animations
-- `interpolate()` for value transitions over time
-- `Sequence` components for timeline control
-- `AbsoluteFill` for absolute positioning (equivalent to absolute div)
-
-### Configuration
-- `remotion.config.ts` - Remotion-specific settings
-  - Video format: JPEG images
-  - Overwrite output enabled
-  - Tailwind CSS integration via webpack config
-- `tsconfig.json` - TypeScript configuration optimized for Remotion
-- Output directory: `out/` for rendered videos
-
-## Component Development
-
-### Schema-First Approach
-All compositions use Zod schemas for prop validation:
-```typescript
-export const myCompSchema = z.object({
-  titleText: z.string(),
-  titleColor: zColor(),
-});
-```
-
-### Animation Timing
-- Frame-based timing system (30 FPS standard)
-- Use `useCurrentFrame()` and `useVideoConfig()` hooks
-- Sequences control when components appear in timeline
-
-### Styling
-- Tailwind CSS classes work within Remotion components
-- Shared constants in `constants.ts` for consistency
-- Remotion-specific styling via inline styles for animations
-
-## Rendering
-
-### CLI Rendering
-- Use composition IDs from `Root.tsx` for targeted rendering
-- Custom render scripts in package.json for common outputs
-- Output formats configurable via CLI flags or config
-
-### Parametrized Rendering
-- Props can be overridden at render time
-- Useful for generating multiple videos with different content
-- Schema validation ensures type safety
-
-## Development Workflow Commands general nodejs, react, vue ect... project
-  - Refer to package.json for script
-
-1. Start project in dev mode: `bun run dev`
-2. build:  `bun run build`
-3. 
-
-
-## Development Commands for this project
-
-```bash
-npm run dev          # Start Remotion Studio (preview environment)
-npm run build        # Bundle the project for rendering
-npm run render       # Render all compositions
-npm run renderHello  # Render specifically the HelloWorld composition
-npm run renderOut    # Render HelloWorld to out/hello-world.mp4 with H264 codec
-npm run upgrade      # Upgrade Remotion to latest version
-npm run lint         # Run ESLint and TypeScript checks
-```
-
-1. Start Remotion Studio: `bun run dev`
-2. Edit components in real-time preview
-3. Test animations using timeline scrubbing
-4. Render final video: `bun run renderOut`
-5. Run linting: `bun run lint`
-
-## Project Architecture
-
-### Core Structure
-- `src/Root.tsx` - Remotion root component defining all compositions
-- `src/Studio.tsx` - Main video composition with animation logic
-- `src/HelloWorld/` - Component library for the video
-  - Individual components: `Logo.tsx`, `Title.tsx`, `Subtitle.tsx`, `Arc.tsx`, `Atom.tsx`
-  - `constants.ts` - Shared styling constants
-
-### Video Compositions
-Each `<Composition>` in `Root.tsx` represents a renderable video with:
-- Unique ID for CLI rendering
-- Duration in frames and FPS
-- Video dimensions (1920x1080)
-- Zod schema for prop validation
-- Default props for parametrized rendering
-
-### Animation Patterns
-- Uses `spring()` for smooth physics-based animations
-- `interpolate()` for value transitions over time
-- `Sequence` components for timeline control
-- `AbsoluteFill` for absolute positioning (equivalent to absolute div)
-
-### Configuration
-- `remotion.config.ts` - Remotion-specific settings
-  - Video format: JPEG images
-  - Overwrite output enabled
-  - Tailwind CSS integration via webpack config
-- `tsconfig.json` - TypeScript configuration optimized for Remotion
-- Output directory: `out/` for rendered videos
-
-## Component Development
-
-### Schema-First Approach
-All compositions use Zod schemas for prop validation:
-```typescript
-export const myCompSchema = z.object({
-  titleText: z.string(),
-  titleColor: zColor(),
-});
-```
-
-### Animation Timing
-- Frame-based timing system (30 FPS standard)
-- Use `useCurrentFrame()` and `useVideoConfig()` hooks
-- Sequences control when components appear in timeline
-
-### Styling
-- Tailwind CSS classes work within Remotion components
-- Shared constants in `constants.ts` for consistency
-- Remotion-specific styling via inline styles for animations
+The original content of this file referenced a different project (Remotion/YouTube MCP). That content was removed and replaced with the CLI-focused overview above. The general rules and code policies below are preserved and remain applicable.
 
 ## Rendering
 
