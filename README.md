@@ -2,7 +2,7 @@
 
 A Node.js CLI that fetches YouTube transcripts from a video URL or video ID.
 
-This project is a standalone CLI package for npm and bun (not an MCP server).
+This project is a standalone CLI package for npx, npm and bun.
 
 ## Features
 
