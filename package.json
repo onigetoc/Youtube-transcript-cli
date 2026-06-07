@@ -1,6 +1,6 @@
 {
   "name": "youtube-transcript-cli",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "A Node.js CLI that fetches YouTube transcripts from a video URL or video ID.",
   "author": "Onigetoc",
   "private": false,
@@ -29,15 +29,16 @@
     "README.md"
   ],
   "bin": {
-    "yt-transcript": "build/cli.js"
+    "youtube-transcript-cli": "build/cli.js"
   },
   "scripts": {
     "build": "tsc",
     "prepublishOnly": "npm run build",
     "start": "node build/index.js",
-    "dev": "bunx tsx src/index.ts",
+    "dev": "bun tsx src/index.ts",
     "test": "node build/cli.js --help",
-    "test:live": "node build/cli.js https://youtu.be/dQw4w9WgXcQ --timestamps"
+    "test:live": "node build/cli.js https://youtu.be/dQw4w9WgXcQ --timestamps",
+    "test:npx": "npx youtube-transcript-cli --help"
   },
   "dependencies": {
     "youtube-transcript-plus": "^1.1.3"
