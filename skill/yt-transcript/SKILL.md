@@ -53,23 +53,35 @@ If no URL/ID is provided, a built-in demo video is used.
 | `--max=6000` | Split output into chunks of N characters (0 = no chunking) |
 | `--help` / `-h` | Show help |
 
+## Important: Always quote URLs
+
+URLs may contain special characters (`&`, `%`, etc.) that shells like PowerShell interpret as operators. **Always wrap URLs in double quotes** to avoid errors:
+
+```sh
+# ✅ Correct (quoted URL)
+youtube-transcript-cli "https://www.youtube.com/watch?v=dQw4w9WgXcQ" --timestamps
+
+# ❌ Wrong (unquoted URL with & will break in PowerShell)
+youtube-transcript-cli https://www.youtube.com/watch?v=dQw4w9WgXcQ&pp=xyz --timestamps
+```
+
 ## Common Examples
 
 ```sh
 # Basic transcript (no timestamps, no chunking)
-youtube-transcript-cli https://www.youtube.com/watch?v=dQw4w9WgXcQ
+youtube-transcript-cli "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
 
 # With language priority, timestamps, and chunking
-youtube-transcript-cli https://www.youtube.com/watch?v=dQw4w9WgXcQ --lang=en,fr --timestamps --max=6000
+youtube-transcript-cli "https://www.youtube.com/watch?v=dQw4w9WgXcQ" --lang=en,fr --timestamps --max=6000
 
 # Using short URL
-youtube-transcript-cli https://youtu.be/dQw4w9WgXcQ --timestamps
+youtube-transcript-cli "https://youtu.be/dQw4w9WgXcQ" --timestamps
 
 # Using raw video ID
 youtube-transcript-cli dQw4w9WgXcQ --lang=en
 
 # Run without global install via npx
-npx youtube-transcript-cli https://www.youtube.com/watch?v=dQw4w9WgXcQ --lang=en,fr --timestamps --max=6000
+npx youtube-transcript-cli "https://www.youtube.com/watch?v=dQw4w9WgXcQ" --lang=en,fr --timestamps --max=6000
 ```
 
 ## Output Behavior
