@@ -5,9 +5,8 @@
 import { normalizeGlitches } from '../utils/html.js';
 import { formatSrtTimestamp } from '../utils/time.js';
 import { buildLinesFromSegments, type TranscriptSegment } from '../transcript.js';
-import { decodeHtmlEntities } from '../utils/html.js';
 
-export type SubtitleEntry = {
+type SubtitleEntry = {
 	startSec: number;
 	endSec: number;
 	text: string;
@@ -18,7 +17,7 @@ type ParsedTimestampLine = {
 	text: string;
 };
 
-export function parseTimestampLine(line: string): ParsedTimestampLine | null {
+function parseTimestampLine(line: string): ParsedTimestampLine | null {
 	const m = line.match(/^\[(?:(\d{2}):)?(\d{2}):(\d{2})\]\s*(.+)$/);
 	if (!m) return null;
 	const h = m[1] ? Number(m[1]) : 0;
@@ -29,7 +28,7 @@ export function parseTimestampLine(line: string): ParsedTimestampLine | null {
 	return { startSec: (h * 3600) + (mm * 60) + ss, text };
 }
 
-export function toSubtitleEntriesFromTimestampLines(lines: string[]): SubtitleEntry[] {
+function toSubtitleEntriesFromTimestampLines(lines: string[]): SubtitleEntry[] {
 	const parsed = lines
 		.map(parseTimestampLine)
 		.filter((entry): entry is ParsedTimestampLine => Boolean(entry));

@@ -108,6 +108,16 @@ youtube-transcript-cli --version
 npx youtube-transcript-cli -v
 ```
 
+## Local test
+
+Test local in projet after build
+
+```sh
+node build/cli.js https://youtu.be/dQw4w9WgXcQ --timestamps
+# or
+run test:live
+```
+
 ## Options
 
 - `--lang=en,fr` or `--lang en,fr`: language priority list
@@ -157,15 +167,6 @@ Notes:
 ```
 
 After adding the folder, register or load the `skills` directory according to your assistant's mechanism so the skill becomes discoverable.
-
-## Publish to npm
-
-When you are ready:
-
-```sh
-npm login
-npm publish
-```
 
 The package is configured with:
 
